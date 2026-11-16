@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.claude/
+*_plot.html
+*_long.csv
