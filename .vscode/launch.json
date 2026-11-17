@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Tecan plot",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/tecan_plot.py",
+      "args": ["${input:xlsx}"],
+      "console": "integratedTerminal"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "xlsx",
+      "type": "promptString",
+      "description": "Path to the Tecan .xlsx export"
+    }
+  ]
+}
