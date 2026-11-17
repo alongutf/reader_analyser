@@ -21,12 +21,12 @@ To update an existing environment: `conda env update -f environment.yml`.
 python tecan_plot.py path/to/experiment.xlsx --open
 ```
 
-This writes, next to the input file:
+This writes:
 
-| File | Contents |
-| --- | --- |
-| `<name>_plot.html` | Interactive plot (works offline; open in any browser) |
-| `<name>_long.csv` | Tidy data: one row per well per time point |
+| File | Location | Contents |
+| --- | --- | --- |
+| `<name>_plot.html` | `results/` in this repo | Interactive plot (works offline; open in any browser) |
+| `<name>_long.csv` | next to the input file | Tidy data: one row per well per time point |
 
 ### Options
 

@@ -3,3 +3,5 @@ __pycache__/
 .claude/
 *_plot.html
 *_long.csv
+results/*
+!results/.gitkeep

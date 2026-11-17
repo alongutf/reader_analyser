@@ -5,7 +5,7 @@ are placed on a common time axis using the "Start Time:" stamp on each sheet,
 so gaps between runs show up as real gaps.
 
 Usage:
-    python tecan_plot.py data.xlsx                # writes data_plot.html + data_long.csv
+    python tecan_plot.py data.xlsx                # writes results/data_plot.html + data_long.csv
     python tecan_plot.py data.xlsx -o out.html --cdn --open
 
 The HTML has a plate-layout well picker (click a well, a row letter, a column
@@ -29,6 +29,7 @@ import openpyxl
 import pandas as pd
 import plotly.graph_objects as go
 
+RESULTS_DIR = Path(__file__).resolve().parent / "results"
 WELL_RE = re.compile(r"^([A-P])(\d{1,2})$")
 
 
@@ -341,7 +342,7 @@ def write_html(data: pd.DataFrame, out: Path, title: str, cdn: bool, blank: str 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("xlsx", type=Path, help="Tecan i-control Excel export (one sheet per run)")
-    ap.add_argument("-o", "--out", type=Path, help="output HTML (default: <xlsx>_plot.html)")
+    ap.add_argument("-o", "--out", type=Path, help="output HTML (default: results/<xlsx name>_plot.html in this repo)")
     ap.add_argument("--csv", type=Path, help="output long-format CSV (default: <xlsx>_long.csv)")
     ap.add_argument("--no-csv", action="store_true", help="don't write the CSV")
     ap.add_argument("--cdn", action="store_true", help="load plotly.js from CDN (smaller file, needs internet)")
@@ -360,7 +361,8 @@ def main(argv=None):
         data = data.merge(bg, on=["label", "sheet", "cycle"], how="left")
         data["value_bgsub"] = data["value"] - data.pop("_bg")
     stem = args.xlsx.with_suffix("")
-    out = args.out or Path(f"{stem}_plot.html")
+    out = args.out or RESULTS_DIR / f"{stem.name}_plot.html"
+    out.parent.mkdir(parents=True, exist_ok=True)
     write_html(data, out, title=args.xlsx.name, cdn=args.cdn, blank=args.blank)
     print(f"wrote {out}")
     if not args.no_csv:
